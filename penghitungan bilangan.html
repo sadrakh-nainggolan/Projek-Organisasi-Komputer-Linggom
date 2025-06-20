@@ -1,0 +1,466 @@
+<html class="scroll-smooth" lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Konversi Bilangan
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&amp;display=swap" rel="stylesheet"/>
+  <style>
+   html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, #a3cef1 0%, #5a9bd4 100%);
+      overflow-y: auto;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      min-height: 100vh;
+    }
+    main {
+      background: #e6f0fa;
+      max-width: 600px;
+      width: 100%;
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px -12px rgb(90 155 212 / 0.4);
+      padding: 3rem 3rem 3.5rem;
+      animation: slideFadeIn 0.5s ease forwards;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      border: 2px solid #4a7ac7;
+    }
+
+    /* Card entrance animation */
+    @keyframes slideFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Button pulse animation */
+    @keyframes pulseGlow {
+      0%,
+      100% {
+        box-shadow: 0 0 8px 0 rgba(90, 155, 212, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 20px 6px rgba(90, 155, 212, 0.9);
+      }
+    }
+
+    /* Output fade in */
+    .fade-in {
+      animation: fadeInOutput 0.5s ease forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInOutput {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Floating icon animation */
+    @keyframes floatIcon {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* Override Tailwind animation for icon */
+    .animate-floatIcon {
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    /* Scrollbar styling for output */
+    #output::-webkit-scrollbar {
+      width: 8px;
+    }
+    #output::-webkit-scrollbar-thumb {
+      background-color: #5a9bd4;
+      border-radius: 4px;
+    }
+    #output::-webkit-scrollbar-track {
+      background: #d7e3f7;
+      border-radius: 4px;
+    }
+
+    /* Custom input and select focus */
+    select:focus,
+    input:focus {
+      outline-offset: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      main {
+        padding: 2rem 1.5rem 2.5rem;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      label,
+      select,
+      input,
+      button {
+        font-size: 1rem;
+      }
+    }
+
+    /* Tooltip styling */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 220px;
+      background-color: #4a7ac7;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 12px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -110px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.875rem;
+      line-height: 1.2;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      user-select: none;
+    }
+    .tooltip:hover .tooltiptext,
+    .tooltip:focus-within .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Clear button inside input */
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .clear-btn {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #5a9bd4;
+      font-size: 1.25rem;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      padding: 0;
+      line-height: 1;
+      display: none;
+    }
+    .clear-btn.visible {
+      display: block;
+    }
+    .clear-btn:hover {
+      opacity: 1;
+    }
+  </style>
+ </head>
+ <body>
+  <main aria-label="Aplikasi Konversi Bilangan" role="main" tabindex="0">
+   <header class="flex flex-col items-center mb-6 select-none">
+    <img alt="Ikon kalkulator biru dengan latar belakang biru muda, desain modern dan minimalis" class="mb-3 rounded-full shadow-md" height="80" loading="lazy" src="https://storage.googleapis.com/a1aa/image/887dab05-dbd4-4e71-75f9-6fd7b7cf3f8f.jpg" width="80"/>
+    <h1 class="text-center text-4xl font-extrabold text-blue-800 flex items-center gap-3">
+     <i class="fas fa-calculator text-blue-600 animate-floatIcon">
+     </i>
+     Konversi Bilangan
+    </h1>
+    <p class="mt-2 text-blue-700 font-medium max-w-md text-center">
+     Aplikasi sederhana untuk mengkonversi bilangan antar basis dengan
+        langkah-langkah yang mudah dipahami.
+    </p>
+   </header>
+   <section class="flex flex-col gap-4">
+    <label class="text-blue-700 font-semibold text-lg flex items-center gap-1" for="konversi">
+     Jenis Konversi:
+     <span aria-label="Informasi jenis konversi" class="tooltip" tabindex="0">
+      <i class="fas fa-info-circle text-blue-500">
+      </i>
+      <span class="tooltiptext">
+       Pilih jenis konversi bilangan yang ingin dilakukan, misal Desimal ke Biner.
+      </span>
+     </span>
+    </label>
+    <select aria-describedby="konversiHelp" class="w-full rounded-xl border border-blue-300 px-5 py-4 text-blue-900 font-semibold shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300" id="konversi">
+     <option value="desToBin">
+      Desimal ke Biner
+     </option>
+     <option value="desToOct">
+      Desimal ke Oktal
+     </option>
+     <option value="desToHex">
+      Desimal ke Heksadesimal
+     </option>
+     <option value="binToDes">
+      Biner ke Desimal
+     </option>
+     <option value="binToOct">
+      Biner ke Oktal
+     </option>
+     <option value="binToHex">
+      Biner ke Heksadesimal
+     </option>
+     <option value="octToDes">
+      Oktal ke Desimal
+     </option>
+     <option value="octToBin">
+      Oktal ke Biner
+     </option>
+     <option value="octToHex">
+      Oktal ke Heksadesimal
+     </option>
+     <option value="hexToDes">
+      Heksadesimal ke Desimal
+     </option>
+     <option value="hexToBin">
+      Heksadesimal ke Biner
+     </option>
+     <option value="hexToOct">
+      Heksadesimal ke Oktal
+     </option>
+    </select>
+   </section>
+   <section class="flex flex-col gap-4 relative">
+    <label class="text-blue-700 font-semibold text-lg flex items-center gap-1" for="inputBilangan">
+     Masukkan Bilangan:
+     <span aria-label="Informasi input bilangan" class="tooltip" tabindex="0">
+      <i class="fas fa-info-circle text-blue-500">
+      </i>
+      <span class="tooltiptext">
+       Masukkan bilangan sesuai basis yang dipilih, contoh: 42, -42, 1011, 52, atau 2A.
+      </span>
+     </span>
+    </label>
+    <div class="input-wrapper">
+     <input aria-describedby="inputHelp" autocapitalize="none" autocomplete="off" autocorrect="off" class="w-full rounded-xl border border-blue-300 px-5 py-4 text-blue-900 font-semibold placeholder-blue-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-400 transition duration-300 pr-12" id="inputBilangan" inputmode="text" placeholder="Contoh: 42, -42, 1011, 52, atau 2A" spellcheck="false" type="text"/>
+     <button aria-label="Bersihkan input" class="clear-btn" id="clearInputBtn" title="Bersihkan input" type="button">
+      <i class="fas fa-times-circle">
+      </i>
+     </button>
+    </div>
+   </section>
+   <button aria-label="Tombol konversi bilangan" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-extrabold py-4 rounded-3xl shadow-lg transition duration-300 flex items-center justify-center gap-4 focus:outline-none focus:ring-4 focus:ring-blue-300 animate-pulseGlow" id="convertBtn" onclick="konversiBilangan()" type="button">
+    <i class="fas fa-exchange-alt text-xl animate-floatIcon">
+    </i>
+    Konversi
+   </button>
+   <section class="mt-10">
+    <h3 class="mb-4 text-blue-800 font-extrabold text-2xl select-none drop-shadow-md flex items-center gap-3">
+     <i class="fas fa-scroll text-blue-600">
+     </i>
+     Hasil:
+    </h3>
+    <pre aria-atomic="true" aria-live="polite" class="bg-blue-50 rounded-2xl p-6 min-h-[10rem] text-blue-900 font-mono text-base leading-relaxed whitespace-pre-wrap shadow-inner transition-opacity duration-500 overflow-y-auto max-h-[25rem]" id="output" tabindex="0"></pre>
+   </section>
+   <footer class="mt-10 text-center text-blue-700 text-sm select-none">
+    <p>
+     © 2024 Konversi Bilangan. Dibuat dengan ❤️ menggunakan Tailwind CSS dan
+        JavaScript.
+    </p>
+   </footer>
+  </main>
+  <script>
+   // Clear input button functionality and toggle visibility
+    const clearBtn = document.getElementById("clearInputBtn");
+    const inputField = document.getElementById("inputBilangan");
+
+    function toggleClearBtn() {
+      if (inputField.value.length > 0) {
+        clearBtn.classList.add("visible");
+      } else {
+        clearBtn.classList.remove("visible");
+      }
+    }
+
+    inputField.addEventListener("input", toggleClearBtn);
+
+    clearBtn.addEventListener("click", () => {
+      inputField.value = "";
+      inputField.focus();
+      clearBtn.classList.remove("visible");
+      document.getElementById("output").textContent = "";
+    });
+
+    // Initialize clear button visibility on page load
+    toggleClearBtn();
+
+    function konversiBilangan() {
+      const jenis = document.getElementById("konversi").value;
+      const inputRaw = inputField.value.trim();
+      const output = document.getElementById("output");
+      let hasil = "";
+      let langkah = [];
+
+      function tampilkan(langkahArr, hasilAkhir) {
+        return langkahArr.join("\n") + `\n\nHasil: ${hasilAkhir}`;
+      }
+
+      // Fungsi bantu konversi desimal ke basis lain (2,8,16) dengan langkah
+      function desToBase(n, base, allowNegative = true) {
+        const simbol = "0123456789ABCDEF";
+        let absN = Math.abs(n);
+        let isNegatif = n < 0 && allowNegative;
+        let res = "";
+        let steps = [];
+        if (absN === 0) {
+          steps.push(`0 ÷ ${base} = 0 sisa 0`);
+          res = "0";
+        } else {
+          while (absN > 0) {
+            let sisa = absN % base;
+            steps.push(
+              `${absN} ÷ ${base} = ${Math.floor(absN / base)} sisa ${sisa}${
+                base === 16 ? ` (${simbol[sisa]})` : ""
+              }`
+            );
+            res = simbol[sisa] + res;
+            absN = Math.floor(absN / base);
+          }
+        }
+        if (isNegatif) res = "-" + res;
+        return { res, steps };
+      }
+
+      // Fungsi bantu konversi basis lain ke desimal dengan langkah
+      function baseToDes(input, base, simbol = "0123456789ABCDEF") {
+        let isNegatif = false;
+        let str = input.toUpperCase();
+        if (str.startsWith("-")) {
+          isNegatif = true;
+          str = str.slice(1);
+        }
+        if (!new RegExp(`^[${simbol.slice(0, base)}]+$`).test(str))
+          throw `Input bukan bilangan basis ${base}.`;
+        let total = 0;
+        let steps = [];
+        for (let i = 0; i < str.length; i++) {
+          let val = simbol.indexOf(str[str.length - 1 - i]);
+          let nilai = val * base ** i;
+          steps.push(`${str[str.length - 1 - i]} (${val}) x ${base}^${i} = ${nilai}`);
+          total += nilai;
+        }
+        if (isNegatif) total = -total;
+        return { total, steps };
+      }
+
+      // Fungsi bantu konversi biner ke oktal/heksadesimal dengan langkah
+      function binToBase(input, base) {
+        // Konversi biner ke desimal dulu
+        let { total, steps: langkahDes } = baseToDes(input, 2);
+        // Lalu desimal ke base tujuan
+        let { res, steps: langkahBase } = desToBase(total, base);
+        return { res, langkahDes, langkahBase };
+      }
+
+      // Fungsi bantu konversi oktal/heksadesimal ke biner dengan langkah
+      function baseToBin(input, base) {
+        // Konversi ke desimal dulu
+        let { total, steps: langkahDes } = baseToDes(input, base);
+        // Desimal ke biner
+        let { res, steps: langkahBin } = desToBase(total, 2);
+        return { res, langkahDes, langkahBin };
+      }
+
+      // Animate output fade
+      output.style.opacity = 0;
+
+      setTimeout(() => {
+        try {
+          if (jenis === "desToBin") {
+            let n = parseInt(inputRaw, 10);
+            if (isNaN(n)) throw "Input harus berupa bilangan bulat.";
+            // For desToBin, do not allow negative sign in result
+            let { res, steps } = desToBase(n, 2, false);
+            output.textContent = tampilkan(steps, res);
+          } else if (jenis === "desToOct") {
+            let n = parseInt(inputRaw, 10);
+            if (isNaN(n)) throw "Input harus berupa bilangan bulat.";
+            let { res, steps } = desToBase(n, 8);
+            output.textContent = tampilkan(steps, res);
+          } else if (jenis === "desToHex") {
+            let n = parseInt(inputRaw, 10);
+            if (isNaN(n)) throw "Input harus berupa bilangan bulat.";
+            let { res, steps } = desToBase(n, 16);
+            output.textContent = tampilkan(steps, res);
+          } else if (jenis === "binToDes") {
+            let { total, steps } = baseToDes(inputRaw, 2);
+            output.textContent = tampilkan(steps, total);
+          } else if (jenis === "binToOct") {
+            let { res, langkahDes, langkahBase } = binToBase(inputRaw, 8);
+            let gabungLangkah = [...langkahDes, "", ...langkahBase];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else if (jenis === "binToHex") {
+            let { res, langkahDes, langkahBase } = binToBase(inputRaw, 16);
+            let gabungLangkah = [...langkahDes, "", ...langkahBase];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else if (jenis === "octToDes") {
+            let { total, steps } = baseToDes(inputRaw, 8);
+            output.textContent = tampilkan(steps, total);
+          } else if (jenis === "octToBin") {
+            let { res, langkahDes, langkahBin } = baseToBin(inputRaw, 8);
+            let gabungLangkah = [...langkahDes, "", ...langkahBin];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else if (jenis === "octToHex") {
+            let { total, steps: langkahOctDes } = baseToDes(inputRaw, 8);
+            let { res, steps: langkahDesHex } = desToBase(total, 16);
+            let gabungLangkah = [...langkahOctDes, "", ...langkahDesHex];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else if (jenis === "hexToDes") {
+            let { total, steps } = baseToDes(inputRaw, 16);
+            output.textContent = tampilkan(steps, total);
+          } else if (jenis === "hexToBin") {
+            let { res, langkahDes, langkahBin } = baseToBin(inputRaw, 16);
+            let gabungLangkah = [...langkahDes, "", ...langkahBin];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else if (jenis === "hexToOct") {
+            let { total, steps: langkahHexDes } = baseToDes(inputRaw, 16);
+            let { res, steps: langkahDesOct } = desToBase(total, 8);
+            let gabungLangkah = [...langkahHexDes, "", ...langkahDesOct];
+            output.textContent = tampilkan(gabungLangkah, res);
+          } else {
+            output.textContent = "Jenis konversi tidak dikenali.";
+          }
+        } catch (e) {
+          output.textContent = "❌ Error: " + e;
+        }
+        output.classList.add("fade-in");
+        output.style.opacity = 1;
+        output.focus();
+      }, 150);
+    }
+  </script>
+ </body>
+</html>
